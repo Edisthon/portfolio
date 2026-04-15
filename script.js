@@ -59,7 +59,58 @@ const translations = {
     "exp-auca-title": "Assistant de Cours de Programmation Java",
     "exp-auca-desc": "Université Adventiste d'Afrique Centrale (AUCA)",
     "contact-title": "Contactez-moi",
-    "contact-text": "Toujours ouvert aux stages, collaborations ou opportunités."
+    "contact-text": "Toujours ouvert aux stages, collaborations ou opportunités.",
+    "awards-title": "Honneurs & Récompenses",
+    "award-hackathon-title": "Finaliste du Hackathon A2SV",
+    "award-hackathon-desc": "Reconnu pour la résolution innovante de problèmes et l'exécution technique.",
+    "award-deanslist-title": "Liste du Doyen - AUCA",
+    "award-deanslist-desc": "Excellence académique dans les études de génie logiciel.",
+    "gallery-title": "Galerie Photos",
+    "form-name": "Votre Nom",
+    "form-email": "Votre Email",
+    "form-message": "Votre Message",
+    "form-send": "Envoyer le Message"
+  },
+  rw: {
+    "nav-home": "Ahabanza",
+    "nav-about": "Ibyerekeye",
+    "nav-skills": "Ubushobozi",
+    "nav-projects": "Imishinga",
+    "nav-experience": "Ubuzobere",
+    "nav-contact": "Twandikire",
+    "hero-name": "Himbaza Nshuti Edisthon",
+    "hero-title": "Umunyeshuri w'Ikoranabuhanga @AUCA | A2SV Trainee | Umwubatsi wa iOS & Backend",
+    "download-cv": "Kurura CV",
+    "about-title": "Ibyerekeye",
+    "about-text": "Ndi umunyeshuri wiga iby'ubwubatsi bw'indangurushusho (Software Engineering) muri AUCA akaba n'umutoza muri A2SV (Africa to Silicon Valley). Nkunda kubaka ibisubizo by'ikoranabuhanga bifatika kuri mobile, backend, n'ububiko bw'amakuru. Mfite ubumenyi muri Java Spring Boot, Android development, SwiftUI, na FHIR-based healthcare interoperability systems.",
+    "skills-title": "Ubushobozi",
+    "skills-tech-title": "Ubumenyi mu Ikoranabuhanga",
+    "skills-prof-title": "Ubumenyi mu Kazi",
+    "skill-ps": "Gukemura Ibibazo",
+    "skill-ads": "Algorithmes & Data Structures",
+    "skill-tp": "Kugaragaza Ibitekerezo",
+    "skill-tc": "Gukorera mu Itsinda",
+    "skill-dst": "System Design Thinking",
+    "projects-title": "Imishinga",
+    "project-natal-desc": "Sisitemu yo gukurikirana ubuzima kuri Android ikoresha amahame ya FHIR. Irimo ibyerekeye Abarwayi, Ibipimo, Gusura, Gahunda, na CarePlan bifite ubushobozi bwo gukora offline.",
+    "project-localcart-desc": "App ya iOS ihuza abaguzi n'abagurisha baho. Irimo kwinjira, kwerekana ibicuruzwa, gushakisha, no gucunga isoko hakoreshejwe Firebase.",
+    "experience-title": "Ubuzobere",
+    "exp-a2sv-title": "A2SV Trainee",
+    "exp-a2sv-desc": "Algorithmes, Data Structures, na Gukemura Ibibazo muri Python",
+    "exp-auca-title": "Java Programming Course Assistant",
+    "exp-auca-desc": "Kaminuza y'Abadiventisti muri Afurika yo Hagati (AUCA)",
+    "contact-title": "Tuvugishe",
+    "contact-text": "Niteguye kwimenyereza umwuga, ubufatanye, cyangwa andi mahirwe.",
+    "awards-title": "Ibihembo & Ishimwe",
+    "award-hackathon-title": "A2SV Hackathon Finalist",
+    "award-hackathon-desc": "Nashimiwe gukemura ibibazo mu buryo bushya no gushyira mu bikorwa ikoranabuhanga.",
+    "award-deanslist-title": "Dean's List - AUCA",
+    "award-deanslist-desc": "Inyandiko y'indashyikirwa mu masomo y'ubwubatsi bw'indangurushusho.",
+    "gallery-title": "Amafoto",
+    "form-name": "Amazina",
+    "form-email": "Email",
+    "form-message": "Ubutumwa",
+    "form-send": "Ohereza"
   }
 };
 
@@ -73,17 +124,56 @@ function setLanguage(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
     }
   });
 
   localStorage.setItem('preferred-lang', lang);
 }
 
-// Language button event listeners
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    setLanguage(btn.getAttribute('data-lang'));
+// Lightbox Logic
+const lightbox = document.createElement('div');
+lightbox.id = 'lightbox';
+document.body.appendChild(lightbox);
+
+const galleryImages = document.querySelectorAll('.gallery-item img');
+galleryImages.forEach(image => {
+  image.addEventListener('click', e => {
+    lightbox.classList.add('active');
+    const img = document.createElement('img');
+    img.src = image.src;
+    while (lightbox.firstChild) {
+      lightbox.removeChild(lightbox.firstChild);
+    }
+    lightbox.appendChild(img);
+  });
+});
+
+lightbox.addEventListener('click', e => {
+  if (e.target !== e.currentTarget) return;
+  lightbox.classList.remove('active');
+});
+
+// Mobile Menu Toggle
+const menuBtn = document.querySelector('.menu-btn');
+const navMenu = document.querySelector('.nav-menu');
+
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    menuBtn.classList.toggle('active');
+  });
+}
+
+// Close menu when link is clicked
+document.querySelectorAll('.nav-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    navMenu.classList.remove('active');
+    if (menuBtn) menuBtn.classList.remove('active');
   });
 });
 
